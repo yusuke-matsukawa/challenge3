@@ -1,0 +1,26 @@
+<%= form_for(book) do |f| %>
+	<div class="field">
+		<%= f.label :title %>
+		<%= f.text_field :title, class: "col-xs-12 book_title" %>
+	</div>
+
+	<div class="field">
+		<%= f.label :body %> <!-- ここを変更 -->
+		<%= f.text_area :body, class: "col-xs-12 book_body" %>
+	</div>
+
+	<div class="actions">
+		<%= f.submit class: "btn btn-primary col-xs-12" %>
+	</div>
+<% end %>
+
+<!-- ↓エラー -->
+	<% if book.errors.any? %>
+		<h3><%= book.errors.count %>errorです。</h3>
+   		<ul>
+			<% book.errors.full_messages.each do |message| %>
+			<li><%= message %></li>
+			<% end %>
+		</ul>
+	<% end %>
+</div>
