@@ -1,19 +1,19 @@
-<div class="container">
-	<div class="row">
+<!-- <div class="container">
+	<div class="row"> -->
 		<div class="col-xs-3">
 
 			<h2>User info</h2>
 			<%= render 'users/profile', user: @user %>
 
 			<h2>New book</h2>
-			<%= render 'books/newform', book: @book %>
+			<%= render 'books/newform', book: @book2 %>
 
 		</div>
-	</div>
-</div>
+<!-- 	</div>
+</div> -->
 
-<div class="container">
-	<div class="row">
+<!-- <div class="container">
+	<div class="row"> -->
 		<div class="col-xs-9">
 			<h2>Book detail</h2>
 
@@ -27,14 +27,53 @@
 						</td>
 						<td><%= link_to @book.title, @book %></td>
 						<td><%= @book.body %></td>
+
+						<!-- いいね -->
+						<% if @book.favorited_by?(current_user) %>
+								<td>
+									<%= link_to book_favorites_path(@book), method: :delete do %>
+										<i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+										<%= @book.favorites.count %>
+									<% end %>
+								</td>
+							<% else %>
+								<td>
+									<%= link_to book_favorites_path(@book), method: :post do %>
+										<i class="fa fa-heart-o" aria-hidden="true"></i>
+										<%= @book.favorites.count %>
+									<% end %>
+								</td>
+							<% end %>
+						<!-- ここまでいいね機能 -->
+						<!-- コメント数機能 -->
+						<td>
+							<p>コメント数：<%= @book.book_comments.count %></p>
+						</td>
+						<!-- ここまでコメント数機能 -->
 						<% if @book.user == current_user %>
 						<td><%= link_to "Edit",edit_book_path(@book), class: "btn-sm btn-success edit_book_#{@book.id}" %></td>
 						<td><%= link_to "Destroy",@book, method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "btn-sm btn-danger destroy_book_#{@book.id}" %></td>
 						<% end %>
 					</tr>
 				</table>
-
+				<!-- コメント一覧 -->
+				<% @book.book_comments.each do |book_comment| %>
+					<%= book_comment.user.name %>
+					<%= book_comment.created_at.strftime('%Y/%m/%d') %>
+					<%= book_comment.comment %>
+					<% if book_comment.user == current_user %>
+						<%= link_to "削除", book_book_comments_path(book_comment), method: :delete, "data-confirm" => "本当に消しますか？" %>
+					<% end %>
+				<% end %>
+				<!-- ここまでコメント一覧 -->
+				<!-- コメント投稿フォーム -->
+				<%= form_for [@book, @book_comment] do |f| %>
+					<%= f.text_area :comment, class: "col-xs-10" %>
+					<%= f.submit "送信" %>
+				<% end %>
+				<!-- ここまでコメント投稿フォーム -->
 		</div>
-	</div>
-</div>
+<!-- 	</div>
+</div> -->
+
 
